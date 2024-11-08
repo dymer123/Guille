@@ -3,6 +3,16 @@ package com.example.ex1.Entities;
 public class Ordenador {
     private int id;
     private String nombre;
+    private String modelo;
+    private double precio;
+
+
+    public Ordenador(int id, String nombre, String modelo, double precio) {
+        this.id = id;
+        this.nombre = nombre;
+        this.modelo = modelo;
+        this.precio = precio;
+    }
 
     public String getModelo() {
         return modelo;
@@ -36,7 +46,5 @@ public class Ordenador {
         this.id = id;
     }
 
-    private String modelo;
-    private double precio;
 
 }
