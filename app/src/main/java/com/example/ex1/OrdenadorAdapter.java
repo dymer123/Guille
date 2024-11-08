@@ -23,7 +23,7 @@ public class OrdenadorAdapter extends RecyclerView.Adapter<OrdenadorAdapter.Orde
     private DatabaseHelper db;
     private OnOrdenadorChangeListener listener;
 
-    public OrdenadorAdapter(Context context, List<Ordenador> ordenadores,   DatabaseHelper db, OnOrdenadorChangeListener listener) {
+    public OrdenadorAdapter(Context context, List<Ordenador> ordenadores, DatabaseHelper db, OnOrdenadorChangeListener listener) {
         this.context = context;
         this.ordenadores = ordenadores;
         this.db = db;
@@ -45,9 +45,7 @@ public class OrdenadorAdapter extends RecyclerView.Adapter<OrdenadorAdapter.Orde
         holder.textPrecio.setText(String.valueOf(ordenador.getPrecio()));
 
         holder.btnEditar.setOnClickListener(v -> {
-            OrdenadorDialog dialog = new OrdenadorDialog(context, db, ordenador, () -> {
-                listener.onOrdenadorChanged();
-            });
+            OrdenadorDialog dialog = new OrdenadorDialog(context, db, ordenador, () -> listener.onOrdenadorChanged());
             dialog.showDialog();
         });
 
@@ -55,7 +53,7 @@ public class OrdenadorAdapter extends RecyclerView.Adapter<OrdenadorAdapter.Orde
             int rowsDeleted = db.deleteOrdenador(ordenador.getId());
             if (rowsDeleted > 0) {
                 Toast.makeText(context, "Ordenador eliminado", Toast.LENGTH_SHORT).show();
-                listener.onOrdenadorChanged();
+                listener.onOrdenadorChanged();  // Notifica el cambio para refrescar la lista
             } else {
                 Toast.makeText(context, "Error al eliminar", Toast.LENGTH_SHORT).show();
             }
@@ -65,6 +63,12 @@ public class OrdenadorAdapter extends RecyclerView.Adapter<OrdenadorAdapter.Orde
     @Override
     public int getItemCount() {
         return ordenadores.size();
+    }
+
+    // Método para actualizar la lista de datos
+    public void updateData(List<Ordenador> newOrdenadores) {
+        this.ordenadores = newOrdenadores;
+        notifyDataSetChanged();
     }
 
     public static class OrdenadorViewHolder extends RecyclerView.ViewHolder {
